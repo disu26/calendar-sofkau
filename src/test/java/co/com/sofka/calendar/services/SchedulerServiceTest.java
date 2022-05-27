@@ -44,27 +44,22 @@ class SchedulerServiceTest {
         response.subscribe(i -> System.out.println("Categoria: " + i.getCategoryName() + " Date: " + i.getDate().toString()));
 
         StepVerifier.create(response).expectNextCount(13).verifyComplete();
-        /*
-        StepVerifier.create(Flux.just(getSnapResult()))
-                .expectNext(new Gson().toJson(response))
-                .expectComplete();
 
-         */
         StepVerifier.create(response)
-                        .expectNextMatches(e->e.getCategoryName().equals("Principios")&&e.getDate().toString().equals("2022-01-03"))
-                        .expectNextMatches(e->e.getCategoryName().equals("Principios")&&e.getDate().toString().equals("2022-01-04"))
-                        .expectNextMatches(e->e.getCategoryName().equals("Bases")&&e.getDate().toString().equals("2022-01-05"))
-                        .expectNextMatches(e->e.getCategoryName().equals("Bases")&&e.getDate().toString().equals("2022-01-06"))
-                        .expectNextMatches(e->e.getCategoryName().equals("Fundamentos")&&e.getDate().toString().equals("2022-01-07"))
-                        .expectNextMatches(e->e.getCategoryName().equals("Fundamentos")&&e.getDate().toString().equals("2022-01-10"))
-                        .expectNextMatches(e->e.getCategoryName().equals("Fundamentos")&&e.getDate().toString().equals("2022-01-11"))
-                        .expectNextMatches(e->e.getCategoryName().equals("Fundamentos")&&e.getDate().toString().equals("2022-01-12"))
-                        .expectNextMatches(e->e.getCategoryName().equals("Fundamentos avazandos")&&e.getDate().toString().equals("2022-01-13"))
-                        .expectNextMatches(e->e.getCategoryName().equals("Fundamentos avazandos")&&e.getDate().toString().equals("2022-01-14"))
-                        .expectNextMatches(e->e.getCategoryName().equals("Fundamentos avazandos")&&e.getDate().toString().equals("2022-01-17"))
-                        .expectNextMatches(e->e.getCategoryName().equals("Fundamentos avazandos")&&e.getDate().toString().equals("2022-01-18"))
-                        .expectNextMatches(e->e.getCategoryName().equals("Fundamentos avazandos")&&e.getDate().toString().equals("2022-01-19"))
-                .verifyComplete();
+                        .expectNextMatches(e -> e.getCategoryName().equals("Principios") && e.getDate().toString().equals("2022-01-03"))
+                        .expectNextMatches(e -> e.getCategoryName().equals("Principios") && e.getDate().toString().equals("2022-01-04"))
+                        .expectNextMatches(e -> e.getCategoryName().equals("Bases") && e.getDate().toString().equals("2022-01-05"))
+                        .expectNextMatches(e -> e.getCategoryName().equals("Bases") && e.getDate().toString().equals("2022-01-06"))
+                        .expectNextMatches(e -> e.getCategoryName().equals("Fundamentos") && e.getDate().toString().equals("2022-01-07"))
+                        .expectNextMatches(e -> e.getCategoryName().equals("Fundamentos") && e.getDate().toString().equals("2022-01-10"))
+                        .expectNextMatches(e -> e.getCategoryName().equals("Fundamentos") && e.getDate().toString().equals("2022-01-11"))
+                        .expectNextMatches(e -> e.getCategoryName().equals("Fundamentos") && e.getDate().toString().equals("2022-01-12"))
+                        .expectNextMatches(e -> e.getCategoryName().equals("Fundamentos avazandos") && e.getDate().toString().equals("2022-01-13"))
+                        .expectNextMatches(e -> e.getCategoryName().equals("Fundamentos avazandos") && e.getDate().toString().equals("2022-01-14"))
+                        .expectNextMatches(e -> e.getCategoryName().equals("Fundamentos avazandos") && e.getDate().toString().equals("2022-01-17"))
+                        .expectNextMatches(e -> e.getCategoryName().equals("Fundamentos avazandos") && e.getDate().toString().equals("2022-01-18"))
+                        .expectNextMatches(e -> e.getCategoryName().equals("Fundamentos avazandos") && e.getDate().toString().equals("2022-01-19"))
+                        .expectComplete();
 
         Mockito.verify(repository).findById(programId);
     }
