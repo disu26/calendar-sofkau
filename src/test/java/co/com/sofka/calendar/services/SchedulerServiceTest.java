@@ -6,7 +6,6 @@ import co.com.sofka.calendar.collections.Time;
 import co.com.sofka.calendar.model.ProgramDate;
 import co.com.sofka.calendar.repositories.ProgramRepository;
 import com.google.gson.Gson;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -43,14 +41,13 @@ class SchedulerServiceTest {
         Mockito.when(repository.findById(programId)).thenReturn(Mono.just(program));
         //TODO: hacer una subscripción de el servicio reactivo
         Flux<ProgramDate> response = schedulerService.generateCalendar(programId, startDate);
-        /*response.subscribe();*/
-        //schedulerService.generateCalendar(programId, startDate)
+        response.subscribe(i -> System.out.println("Categoria: " + i.getCategoryName() + " Date: " + i.getDate()));
 
-        //Assertions.assertEquals(13, response.size());
-        //Assertions.assertEquals(getSnapResult(), new Gson().toJson(response))
-        StepVerifier.create(response).expectNextCount(1)
-                .expectNextMatches(e -> new ProgramDate(e.getCategoryName(), e.getDate()).toString().equals(new Gson().fromJson(getSnapResult(), ProgramDate.class) ))
-                .verifyComplete();
+        StepVerifier.create(response).expectNextCount(13).verifyComplete();
+
+        StepVerifier.create(Flux.just(getSnapResult()))
+                .expectNext(new Gson().toJson(response))
+                .expectComplete();
 
         Mockito.verify(repository).findById(programId);
     }
@@ -63,13 +60,15 @@ class SchedulerServiceTest {
         Mockito.when(repository.findById(programId)).thenReturn(Mono.empty());
 
         //TODO: hacer de otro modo
-        var exception = Assertions.assertThrows(RuntimeException.class, () -> {
-            schedulerService.generateCalendar(programId, startDate);//TODO: hacer una subscripción de el servicio reactivo
+        //TODO: hacer una subscripción de el servicio reactivo
+        Flux<ProgramDate> exception = schedulerService.generateCalendar(programId, startDate);
+        exception.subscribe(System.out::println);
 
-        });
-        Assertions.assertEquals("El programa academnico no existe", exception.getMessage());//TODO: hacer de otro modo
+        StepVerifier.create(exception)
+                    .expectErrorMessage("El programa academnico no existe")
+                    .verify();
+
         Mockito.verify(repository).findById(programId);
-
     }
 
     //no tocar
